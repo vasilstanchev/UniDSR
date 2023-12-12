@@ -23,27 +23,80 @@ struct Flight {
     Date date;
 };
 
-bool menu(Flight arr, const int& n)
+void enterFlight(Flight arr[], const int& n)
 {
-    int choice;
+    char answerTicketClass;
+    bool flag = false;
+    cout << "Enter the list with the flights:" << endl;
+    for (int i = 0; i < n; i++)
+    {
+        cout << "Enter a Id:" << endl;
+        getline(cin, arr[i].id);
+        cout << "Enter a destination:" << endl;
+        getline(cin, arr[i].destination);
+        cout << "Enter the name of the pilot:" << endl;
+        getline(cin, arr[i].nameOfPilot);
+        cout << "Enter the name of the passenger:" << endl;
+        getline(cin, arr[i].nameOfPassenger);
+        cout << "Enter the base price of the flight" << endl;
+        cin >> arr[i].basePrice;
+        cout << "Is your ticket first class? Y(y) or N(n)" << endl;
+        flag = false;
+        while (flag != true)
+        {
+            cin >> answerTicketClass;
+            switch (answerTicketClass)
+            {
+            case 'Y':
+            case 'y':
+                arr[i].firstClass = true;
+                flag = true;
+                break;
+            case 'N':
+            case 'n':
+                arr[i].secondClass = true;
+                flag = true;
+            default:cout << "Enter a valid answer!" << endl;
+                break;
+            }
+        }
+        cout << "Enter a date of the flight: day, month and year" << endl;
+        cin >> arr[i].date.day;
+        cin >> arr[i].date.month;
+        cin >> arr[i].date.year;
+    }
+}
+
+bool menu(Flight arr[], const int& n)
+{
+    int choice = 0;
     while (choice != 4)
     {
-        cout << "Welcome to my menu for flights. Please select from the following choices:" << endl;
+        cout << "\tWelcome to my menu for flights.\nPlease select from the following choices:" << endl;
         cout << "1. Add flights" << endl;
         cout << "2. Show flights" << endl;
-        cout << "3.Search for a flight via a pilot's name. Show the flights with the lowest price." << endl;
+        cout << "3. Search for a flight via a pilot's name. Show the flights with the lowest price." << endl;
         cout << "4. Exit the program" << endl;
+        cout << "Enter your choice:" << endl;
         cin >> choice;
 
         switch (choice)
         {
-        case 1: break;
+        case 1:
+            enterFlight(arr, n);
+            break;
         case 2: break;
         case 3: break;
-        case 4: break;
-        default: break;
+        case 4:
+            cout << "Goodbye!" << endl;
+            return false;
+            break;
+        default:
+            cout << "Enter a correct choice" << endl;
+            break;
         }
     }
+    return true;
 }
 
 int main()
