@@ -31,13 +31,13 @@ void enterFlight(Flight arr[], const int& n)
     for (int i = 0; i < n; i++)
     {
         cout << "Enter a Id:" << endl;
-        getline(cin, arr[i].id);
+        cin >> arr[i].id;
         cout << "Enter a destination:" << endl;
-        getline(cin, arr[i].destination);
+        cin >> arr[i].destination;
         cout << "Enter the name of the pilot:" << endl;
-        getline(cin, arr[i].nameOfPilot);
+        cin >> arr[i].nameOfPilot;
         cout << "Enter the name of the passenger:" << endl;
-        getline(cin, arr[i].nameOfPassenger);
+        cin >> arr[i].nameOfPassenger;
         cout << "Enter the base price of the flight" << endl;
         cin >> arr[i].basePrice;
         cout << "Is your ticket first class? Y(y) or N(n)" << endl;
@@ -67,6 +67,20 @@ void enterFlight(Flight arr[], const int& n)
     }
 }
 
+void showFlights(const Flight arr[], const int& n)
+{
+    string classType;
+    cout << "Here is the list with the flights: " << endl;
+    cout << "ID | DESTINATION | PILOT'S NAME | PASSENGER'S NAME | BASE PRICE | CLASS | DATE" << endl;
+    for (int i = 0; i < n; i++)
+    {
+        classType = (arr[i].firstClass == true) ? "First class" : "Second class";
+        cout << arr[i].id << " " << arr[i].destination << " " << arr[i].nameOfPilot << " " << arr[i].nameOfPassenger
+            << " " << arr[i].basePrice << " " << classType << " " << arr[i].date.day << "."
+            << arr[i].date.month << "." << arr[i].date.year << endl;
+    }
+}
+
 bool menu(Flight arr[], const int& n)
 {
     int choice = 0;
@@ -85,7 +99,9 @@ bool menu(Flight arr[], const int& n)
         case 1:
             enterFlight(arr, n);
             break;
-        case 2: break;
+        case 2:
+            showFlights(arr, n);
+                break;
         case 3: break;
         case 4:
             cout << "Goodbye!" << endl;
@@ -105,7 +121,7 @@ int main()
     int n;
     cout << "Enter the number of flights you want to register. The maxium is 50." << endl;
     cin >> n;
-
+    menu(arr, n);
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
