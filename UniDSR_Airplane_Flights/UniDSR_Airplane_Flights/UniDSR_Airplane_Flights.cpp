@@ -2,7 +2,26 @@
 //
 
 #include <iostream>
+#include <string>
 using namespace std;
+struct Date {
+    int Day;
+    int Month;
+    int Year;
+};
+struct Flight {
+    string Id;
+    string Destination;
+    string NameOfPilot;
+    string NameOfPassenger;
+    float BasePrice;
+    bool FirstClass = false;
+    bool SecondClass = false;
+    Date date;
+};
+
+
+
 int main()
 {
     // magic to happen here
