@@ -4,27 +4,55 @@
 #include <iostream>
 #include <string>
 using namespace std;
+
+const int ARR_MAX = 50;
+
 struct Date {
-    int Day;
-    int Month;
-    int Year;
+    int day;
+    int month;
+    int year;
 };
 struct Flight {
-    string Id;
-    string Destination;
-    string NameOfPilot;
-    string NameOfPassenger;
-    float BasePrice;
-    bool FirstClass = false;
-    bool SecondClass = false;
+    string id;
+    string destination;
+    string nameOfPilot;
+    string nameOfPassenger;
+    float basePrice;
+    bool firstClass = false;
+    bool secondClass = false;
     Date date;
 };
 
+bool menu(Flight arr, const int& n)
+{
+    int choice;
+    while (choice != 4)
+    {
+        cout << "Welcome to my menu for flights. Please select from the following choices:" << endl;
+        cout << "1. Add flights" << endl;
+        cout << "2. Show flights" << endl;
+        cout << "3.Search for a flight via a pilot's name. Show the flights with the lowest price." << endl;
+        cout << "4. Exit the program" << endl;
+        cin >> choice;
 
+        switch (choice)
+        {
+        case 1: break;
+        case 2: break;
+        case 3: break;
+        case 4: break;
+        default: break;
+        }
+    }
+}
 
 int main()
 {
-    // magic to happen here
+    Flight arr[ARR_MAX];
+    int n;
+    cout << "Enter the number of flights you want to register. The maxium is 50." << endl;
+    cin >> n;
+
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
