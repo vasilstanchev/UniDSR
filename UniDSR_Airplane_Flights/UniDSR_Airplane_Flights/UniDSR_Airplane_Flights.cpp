@@ -22,6 +22,13 @@ struct Flight {
     bool secondClass = false;
     Date date;
 };
+Flight exampleArr[] = {
+    {"23453443", "Burgas", "Ivan Petrov", "Vasil Stanchev", 23.253, true, false, {2, 12, 2004}},
+    {"23453444", "Rome", "Ivan Ivanov", "Vasil Stanimirov", 19.34, false, true, {3, 12, 2004}},
+    {"23453445", "Paris", "Ivan Cvetkov", "Petar Petrov", 25.3, false, true, {14, 10, 2015}},
+    {"23453446", "London", "Pesho Hacka", "Ivan Stanev", 42.55, true, false, {12,3,1991}},
+    {"23453447", "Tokyo", "Vasil Vasilev", "Petko Stankov", 19.34, true, false, {31, 12, 1999}}
+};
 
 void enterFlight(Flight arr[], const int& n)
 {
@@ -81,6 +88,36 @@ void showFlights(const Flight arr[], const int& n)
     }
 }
 
+void showMinPricedFlights(const Flight arr[], const int& n) 
+{
+    Flight min = arr[0];
+    string classType;
+    int indexes[20];
+    int count = 0;
+    for (int i = 0; i < n; i++)
+    {
+        if (arr[i].basePrice < min.basePrice)
+        {
+            min = arr[i];
+            count = 0;
+        }
+        if (arr[i].basePrice == min.basePrice)
+        {
+            indexes[count++] = i;
+        }
+    }
+
+    cout << "Here is the list with the lowest priced flights: " << endl;
+    cout << "ID | DESTINATION | PILOT'S NAME | PASSENGER'S NAME | BASE PRICE | CLASS | DATE" << endl;
+    for (int i = 0; i < count; i++)
+    {
+        classType = (arr[indexes[i]].firstClass == true) ? "First class" : "Second class";
+        cout << arr[indexes[i]].id << " " << arr[indexes[i]].destination << " " << arr[indexes[i]].nameOfPilot << " " << arr[indexes[i]].nameOfPassenger
+            << " " << arr[indexes[i]].basePrice << " " << classType << " " << arr[indexes[i]].date.day << "."
+            << arr[indexes[i]].date.month << "." << arr[indexes[i]].date.year << endl;
+    }
+}
+
 bool menu(Flight arr[], const int& n)
 {
     int choice = 0;
@@ -89,8 +126,9 @@ bool menu(Flight arr[], const int& n)
         cout << "\tWelcome to my menu for flights.\nPlease select from the following choices:" << endl;
         cout << "1. Add flights" << endl;
         cout << "2. Show flights" << endl;
-        cout << "3. Search for a flight via a pilot's name. Show the flights with the lowest price." << endl;
-        cout << "4. Exit the program" << endl;
+        cout << "3. Show the lowest priced flights" << endl;
+        cout << "4. Search for a flight via a pilot's name. Show the flights with the lowest price." << endl;
+        cout << "5. Exit the program" << endl;
         cout << "Enter your choice:" << endl;
         cin >> choice;
 
@@ -102,8 +140,11 @@ bool menu(Flight arr[], const int& n)
         case 2:
             showFlights(arr, n);
                 break;
-        case 3: break;
-        case 4:
+        case 3: 
+            showMinPricedFlights(arr, n);
+            break;
+        case 4: break;
+        case 5:
             cout << "Goodbye!" << endl;
             return false;
             break;
@@ -119,8 +160,13 @@ int main()
 {
     Flight arr[ARR_MAX];
     int n;
-    cout << "Enter the number of flights you want to register. The maxium is 50." << endl;
-    cin >> n;
+    // cout << "Enter the number of flights you want to register. The maxium is 50." << endl;
+    // cin >> n;
+    n = 5;
+    for (int i = 0; i < n; i++)
+    {
+        arr[i] = exampleArr[i];
+    }
     menu(arr, n);
 }
 
