@@ -125,9 +125,10 @@ void showPilotFlights(const Flight arr[], const int& n)
 {
     string name;
     string classType;
+    bool flag = false;
     cout << "Enter a pilot's name:" << endl;
     getline(cin, name);
-
+    
     for (int i = 0; i < n; i++)
     {
         classType = (arr[i].firstClass == true) ? "First class" : "Second class";
@@ -136,13 +137,20 @@ void showPilotFlights(const Flight arr[], const int& n)
             cout << arr[i].id << " " << arr[i].destination << " " << arr[i].nameOfPilot << " " << arr[i].nameOfPassenger
                 << " " << arr[i].basePrice << " " << classType << " " << arr[i].date.day << "."
                 << arr[i].date.month << "." << arr[i].date.year << endl;
+            flag = true;
         }
+    }
+
+    if (flag == false)
+    {
+        cout << "There are no connected flights to this pilot." << endl;
     }
 }
 
 bool menu(Flight arr[], const int& n)
 {
     int choice = 0;
+    string cathcer;
     while (choice != 4)
     {
         cout << "\tWelcome to my menu for flights.\nPlease select from the following choices:" << endl;
@@ -159,7 +167,7 @@ bool menu(Flight arr[], const int& n)
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             cin >> choice;
         }
-        
+        cin.clear();
         switch (choice)
         {
         case 1:
@@ -172,6 +180,7 @@ bool menu(Flight arr[], const int& n)
             showMinPricedFlights(arr, n);
             break;
         case 4:
+            getline(cin, cathcer);
             showPilotFlights(arr, n);
             break;
         case 5:
