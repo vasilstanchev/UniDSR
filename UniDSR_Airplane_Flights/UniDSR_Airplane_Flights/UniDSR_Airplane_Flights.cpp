@@ -30,6 +30,21 @@ Flight exampleArr[] = {
     {"23453447", "Tokyo", "Vasil Vasilev", "Petko Stankov", 19.34, true, false, {31, 12, 1999}}
 };
 
+void validateString(string& validated)
+{
+    cin.clear();
+    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    getline(cin, validated);
+
+    while (cin.fail())
+    {
+        cout << "Invalid entry please enter a text";
+        cin.clear();
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        getline(cin, validated);
+    }
+}
+
 void enterFlight(Flight arr[], const int& n)
 {
     char answerTicketClass;
@@ -127,7 +142,7 @@ void showPilotFlights(const Flight arr[], const int& n)
     string classType;
     bool flag = false;
     cout << "Enter a pilot's name:" << endl;
-    getline(cin, name);
+    validateString(name);
     
     for (int i = 0; i < n; i++)
     {
@@ -150,8 +165,7 @@ void showPilotFlights(const Flight arr[], const int& n)
 bool menu(Flight arr[], const int& n)
 {
     int choice = 0;
-    string cathcer;
-    while (choice != 4)
+    while (choice != 5)
     {
         cout << "\tWelcome to my menu for flights.\nPlease select from the following choices:" << endl;
         cout << "1. Add flights" << endl;
@@ -180,7 +194,6 @@ bool menu(Flight arr[], const int& n)
             showMinPricedFlights(arr, n);
             break;
         case 4:
-            getline(cin, cathcer);
             showPilotFlights(arr, n);
             break;
         case 5:
