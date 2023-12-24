@@ -1,11 +1,13 @@
-// UniDSR_Airplane_Flights.cpp : This file contains the 'main' function. Program execution begins and ends there.
+﻿// UniDSR_Airplane_Flights.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
+#include<Windows.h>
 #include <iostream>
 #include <string>
+#include <algorithm>
 using namespace std;
 
-const int ARR_MAX = 50;
+const int ARRSIZE_MAX = 50;
 
 struct Date {
     int day;
@@ -24,25 +26,29 @@ struct Flight {
 };
 Flight exampleArr[] = {
     {"23453443", "Burgas", "Ivan Petrov", "Vasil Stanchev", 23.253, true, false, {2, 12, 2004}},
-    {"23453444", "Rome", "Ivan Ivanov", "Vasil Stanimirov", 19.34, false, true, {3, 12, 2004}},
+    {"23453444", "Zagora", "Ivan Ivanov", "Vasil Stanimirov", 19.34, false, true, {3, 12, 2004}},
     {"23453445", "Paris", "Ivan Cvetkov", "Petar Petrov", 25.3, false, true, {14, 10, 2015}},
-    {"23453446", "London", "Pesho Hacka", "Ivan Stanev", 42.55, true, false, {12,3,1991}},
+    {"23453446", "Londo", "Pesho Hacka", "Ivan Stanev", 42.55, true, false, {12,3,1991}},
     {"23453447", "Tokyo", "Vasil Vasilev", "Petko Stankov", 19.34, true, false, {31, 12, 1999}}
 };
 
 void validateString(string& validated)
 {
     cin.clear();
-    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    //cin.ignore(numeric_limits<streamsize>::max(), '\n');
     getline(cin, validated);
 
     while (cin.fail())
     {
         cout << "Invalid entry please enter a text";
         cin.clear();
-        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        //cin.ignore(numeric_limits<streamsize>::max(), '\n');
         getline(cin, validated);
     }
+}
+
+bool compareCharacters(char a, char b) {
+    return tolower(a) < tolower(b);
 }
 
 void enterFlight(Flight arr[], const int& n)
@@ -67,7 +73,7 @@ void enterFlight(Flight arr[], const int& n)
         while (flag != true)
         {
             cin >> answerTicketClass;
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            //cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
             switch (answerTicketClass)
             {
@@ -162,6 +168,31 @@ void showPilotFlights(const Flight arr[], const int& n)
     }
 }
 
+void sortArr(Flight arr[], const int& n)
+{
+    bool swap;
+    char first, second;
+    for (int i = 0; i < n - i; i++)
+    {
+        swap = false;
+        for (int j = 0; j < n - i - 1; j++)
+        {
+            first = (char)arr[j].destination[0];
+            second = (char)arr[j + 1].destination[0];
+            if (compareCharacters(first, second))
+            {
+                Flight temp = arr[j];
+                arr[j] = arr[j+1];
+                arr[j + 1] = temp;
+                swap = true;
+            }
+        }
+
+        if (swap == false)
+            break;
+    }
+}
+
 bool menu(Flight arr[], const int& n)
 {
     int choice = 0;
@@ -178,7 +209,7 @@ bool menu(Flight arr[], const int& n)
         if (cin.fail())
         {
             cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            //cin.ignore(numeric_limits<streamsize>::max(), '\n');
             cin >> choice;
         }
         cin.clear();
@@ -210,7 +241,10 @@ bool menu(Flight arr[], const int& n)
 
 int main()
 {
-    Flight arr[ARR_MAX];
+    SetConsoleOutputCP(CP_UTF8);
+    SetConsoleCP(CP_UTF8);
+    
+    Flight arr[ARRSIZE_MAX];
     int n;
     /*cout << "Enter the number of flights you want to register. The maxium is 50." << endl;
     cin >> n;*/
@@ -219,6 +253,7 @@ int main()
     {
         arr[i] = exampleArr[i];
     }
+    sortArr(arr, n);
     menu(arr, n);
 }
 
