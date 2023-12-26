@@ -150,6 +150,8 @@ void showPilotFlights(const Flight arr[], const int& n)
     cout << "Enter a pilot's name:" << endl;
     validateString(name);
     
+    cout << "Here is the list with the given pilot's name flights:" << endl;
+    cout << "ID | DESTINATION | PILOT'S NAME | PASSENGER'S NAME | BASE PRICE | CLASS | DATE" << endl;
     for (int i = 0; i < n; i++)
     {
         classType = (arr[i].firstClass == true) ? "First class" : "Second class";
@@ -272,10 +274,58 @@ void showDateAndPilotFlights(Flight arr[], const int& n)
     }
 }
 
+void calculateCurrentFlightPrice(Flight arr[], const int& n)
+{
+    Date departure;
+    string classType;
+    int departureDays = 0, flightDepartureDays = 0,difference;
+    float currentPrice = 0;
+    cout << "Enter a date:" << endl;
+    cin >> departure.day >> departure.month >> departure.year;
+
+    cout << "Here is the list with the base prices and the new ones:" << endl;
+    cout << "ID | DESTINATION | PILOT'S NAME | PASSENGER'S NAME | BASE PRICE | NEW PRICE | CLASS | FLIGHT DATE | PASSENGER DEPARTURE DATE" << endl;
+    for (int i = 0; i < n; i++)
+    {
+        classType = (arr[i].firstClass == true) ? "First class" : "Second class";
+        departureDays = departure.day + (departure.month * 30) + ((departure.year - 1) * 360);
+        flightDepartureDays = arr[i].date.day + (arr[i].date.month * 30) + ((arr[i].date.year - 1) * 360);
+        difference = flightDepartureDays - departureDays;
+
+        if (difference > 20)
+        {
+            currentPrice = 0.5 * arr[i].basePrice;
+        }
+        else if (difference <= 20 && difference > 5)
+        {
+            currentPrice = 0.75 * arr[i].basePrice;
+        }
+        else if (difference <= 5 && difference > 1)
+        {
+            currentPrice = arr[i].basePrice;
+        }
+        else if (difference == 1)
+        {
+            currentPrice = (0.2 * arr[i].basePrice) + arr[i].basePrice;
+        }
+        else 
+        {
+            cout << "The flight is missed" << endl;
+            continue;
+        }
+
+        cout << arr[i].id << " " << arr[i].destination << " " << arr[i].nameOfPilot << " " << arr[i].nameOfPassenger
+            << " " << arr[i].basePrice << " " << currentPrice << " " << classType << " " << arr[i].date.day << "."
+            << arr[i].date.month << "." << arr[i].date.year << " " << departure.day << "." << departure.month << "." 
+            << departure.year << endl;
+
+    }
+}
+
 bool menu(Flight arr[], const int& n)
 {
     int choice1 = 0, choice2 = 0;
-    while (choice1 != 6)
+    while (choice1 != 7)
     {
         cout << "\tWelcome to my menu for flights.\nPlease select from the following choices:" << endl;
         cout << "1. Add flights" << endl;
@@ -283,7 +333,10 @@ bool menu(Flight arr[], const int& n)
         cout << "3. Show the lowest priced flights" << endl;
         cout << "4. Search for a flight via a pilot's name" << endl;
         cout << "5. Show additional choices" << endl;
-        cout << "6. Exit the program" << endl;
+        cout << "6. Show current prices via a departing date" << endl;
+        cout << "7. Change class via flight's id and passenger name" << endl;
+        cout << "8. Delete an flight and show return price" << endl;
+        cout << "9. Exit the program" << endl;
         cout << "Enter your choice:" << endl;
         cin >> choice1;
         if (cin.fail())
@@ -332,6 +385,11 @@ bool menu(Flight arr[], const int& n)
             }
             break;
         case 6:
+            calculateCurrentFlightPrice(arr, n);
+            break;
+        case 7: break;
+        case 8: break;
+        case 9:
             cout << "Goodbye!" << endl;
             return false;
             break;
