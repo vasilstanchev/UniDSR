@@ -241,7 +241,35 @@ void showSortedAscendingPriceAndClass(Flight arr[], const int& n)
 
 void showDateAndPilotFlights(Flight arr[], const int& n)
 {
+    Date searchedDate;
+    string searchedDestination;
+    bool flag = false;
+    string classType;
+    cout << "Enter a date:" << endl;
+    cin >> searchedDate.day >> searchedDate.month >> searchedDate.year;
+    cout << "Enter a destination" << endl;
+    validateString(searchedDestination);
 
+    cout << "Here's the list with the flights:" << endl;
+    for (int i = 0; i < n; i++)
+    {
+        classType = (arr[i].firstClass == true) ? "First class" : "Second class";
+        if ((searchedDate.day == arr[i].date.day) && (searchedDate.month == arr[i].date.month) && (searchedDate.year == arr[i].date.year))
+        {
+            if (searchedDestination == arr[i].destination)
+            {
+                cout << arr[i].id << " " << arr[i].destination << " " << arr[i].nameOfPilot << " " << arr[i].nameOfPassenger
+                     << " " << arr[i].basePrice << " " << classType << " " << arr[i].date.day << "."
+                     << arr[i].date.month << "." << arr[i].date.year << endl;
+                flag = true;
+            }
+        }
+    }
+
+    if (flag == false)
+    {
+        cout << "There are no connected flights to this date and destination" << endl;
+    }
 }
 
 bool menu(Flight arr[], const int& n)
