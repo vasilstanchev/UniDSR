@@ -1,7 +1,7 @@
 ﻿// UniDSR_Airplane_Flights.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
-#include<Windows.h>
+//#include<Windows.h>
 #include <iostream>
 #include <string>
 #include <algorithm>
@@ -35,14 +35,14 @@ Flight exampleArr[] = {
 void validateString(string& validated)
 {
     cin.clear();
-    //cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
     getline(cin, validated);
 
     while (cin.fail())
     {
         cout << "Invalid entry please enter a text";
         cin.clear();
-        //cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
         getline(cin, validated);
     }
 }
@@ -73,7 +73,7 @@ void enterFlight(Flight arr[], const int& n)
         while (flag != true)
         {
             cin >> answerTicketClass;
-            //cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
             switch (answerTicketClass)
             {
@@ -193,27 +193,79 @@ void sortArr(Flight arr[], const int& n)
     }
 }
 
+void showSortedAscendingPriceAndClass(Flight arr[], const int& n)
+{
+    Flight newArr[ARRSIZE_MAX];
+    bool swap;
+    for (int i = 0; i < n; i++)
+    {
+        newArr[i] = arr[i];
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        swap = false;
+        for (int j = 0; j < n - i - 1; j++)
+        {
+            if (newArr[j].basePrice > newArr[j + 1].basePrice)
+            {
+                Flight temp = newArr[j];
+                newArr[j] = newArr[j + 1];
+                newArr[j + 1] = temp;
+                swap = true;
+            }
+        }
+        if (swap == false)
+            break;
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        swap = false;
+        for (int j = 0; j < n - i - 1; j++)
+        {
+            if ((newArr[j].firstClass == false) && (newArr[j + 1].firstClass == true))
+            {
+                Flight temp = newArr[j];
+                newArr[j] = newArr[j + 1];
+                newArr[j + 1] = temp;
+                swap = true;
+            }
+        }
+        if (swap == false)
+            break;
+    }
+
+    showFlights(newArr, n);
+}
+
+void showDateAndPilotFlights(Flight arr[], const int& n)
+{
+
+}
+
 bool menu(Flight arr[], const int& n)
 {
-    int choice = 0;
-    while (choice != 5)
+    int choice1 = 0, choice2 = 0;
+    while (choice1 != 6)
     {
         cout << "\tWelcome to my menu for flights.\nPlease select from the following choices:" << endl;
         cout << "1. Add flights" << endl;
         cout << "2. Show flights" << endl;
         cout << "3. Show the lowest priced flights" << endl;
-        cout << "4. Search for a flight via a pilot's name. Show the flights with the lowest price." << endl;
-        cout << "5. Exit the program" << endl;
+        cout << "4. Search for a flight via a pilot's name" << endl;
+        cout << "5. Show additional choices" << endl;
+        cout << "6. Exit the program" << endl;
         cout << "Enter your choice:" << endl;
-        cin >> choice;
+        cin >> choice1;
         if (cin.fail())
         {
             cin.clear();
-            //cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cin >> choice;
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cin >> choice1;
         }
         cin.clear();
-        switch (choice)
+        switch (choice1)
         {
         case 1:
             enterFlight(arr, n);
@@ -228,6 +280,30 @@ bool menu(Flight arr[], const int& n)
             showPilotFlights(arr, n);
             break;
         case 5:
+            while (choice2 != 3)
+            {
+                cout << "1. Show ascending sorted data thought price and class of the flights" << endl;
+                cout << "2. Search for a flight via a date and deastination" << endl;
+                cout << "3. Exit to the main menu" << endl;
+                cout << "Enter your choice:" << endl;
+                cin >> choice2;
+                switch (choice2)
+                {
+                case 1:
+                    showSortedAscendingPriceAndClass(arr, n);
+                    break;
+                case 2:
+                    showDateAndPilotFlights(arr, n);
+                    break;
+                case 3:
+                    break;
+                default:
+                    cout << "Enter a correct choice" << endl;
+                    break;
+                }
+            }
+            break;
+        case 6:
             cout << "Goodbye!" << endl;
             return false;
             break;
@@ -241,8 +317,8 @@ bool menu(Flight arr[], const int& n)
 
 int main()
 {
-    SetConsoleOutputCP(CP_UTF8);
-    SetConsoleCP(CP_UTF8);
+    //SetConsoleOutputCP(CP_UTF8);
+    //SetConsoleCP(CP_UTF8);
     
     Flight arr[ARRSIZE_MAX];
     int n;
