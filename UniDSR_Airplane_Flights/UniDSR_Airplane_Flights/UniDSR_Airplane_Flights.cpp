@@ -322,10 +322,57 @@ void calculateCurrentFlightPrice(Flight arr[], const int& n)
     }
 }
 
+void changePassengerClass(Flight arr[], const int& n)
+{
+    char choice;
+    bool flag1 = false, flag2 = false;
+    string searchedId, searchedName;
+    cout << "Enter a name:" << endl;
+    validateString(searchedName);
+    cout << "Enter an Id:" << endl;
+    getline(cin, searchedId);
+
+    for (int i = 0; i < n; i++)
+    {
+        if (searchedId == arr[i].id && searchedName == arr[i].nameOfPassenger)
+        {
+            cout << "Do you want to change you ticket to a first class?" << endl;
+            cout << "Answer Y(y)/N(n):" << endl;
+            while (flag1 != true)
+            {
+                cin >> choice;
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+                switch (choice)
+                {
+                case 'Y':
+                case 'y':
+                    arr[i].firstClass = true;
+                    flag1 = true;
+                    break;
+                case 'N':
+                case 'n':
+                    arr[i].secondClass = true;
+                    flag1 = true;
+                    break;
+                default:cout << "Enter a valid answer!" << endl;
+                    break;
+                }
+            }
+            flag2 = true;
+        }
+    }
+
+    if (flag2 == false)
+        cout << "This passenger doesn't exist" << endl;
+    else
+        showFlights(arr, n);
+}
+
 bool menu(Flight arr[], const int& n)
 {
     int choice1 = 0, choice2 = 0;
-    while (choice1 != 7)
+    while (choice1 != 9)
     {
         cout << "\tWelcome to my menu for flights.\nPlease select from the following choices:" << endl;
         cout << "1. Add flights" << endl;
@@ -387,8 +434,12 @@ bool menu(Flight arr[], const int& n)
         case 6:
             calculateCurrentFlightPrice(arr, n);
             break;
-        case 7: break;
-        case 8: break;
+        case 7: 
+            changePassengerClass(arr, n);
+            break;
+        case 8:
+            
+            break;
         case 9:
             cout << "Goodbye!" << endl;
             return false;
