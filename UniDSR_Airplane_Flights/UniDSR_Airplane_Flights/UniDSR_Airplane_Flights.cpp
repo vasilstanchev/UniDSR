@@ -1,7 +1,7 @@
 ﻿// UniDSR_Airplane_Flights.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
-//#include<Windows.h>
+#include<Windows.h>
 #include <iostream>
 #include <string>
 #include <algorithm>
@@ -25,24 +25,24 @@ struct Flight {
     Date date;
 };
 Flight exampleArr[] = {
-    {"23453443", "Burgas", "Ivan Petrov", "Vasil Stanchev", 23.253, true, false, {2, 12, 2004}},
-    {"23453444", "Zagora", "Ivan Ivanov", "Vasil Stanimirov", 19.34, false, true, {3, 12, 2004}},
-    {"23453445", "Paris", "Ivan Cvetkov", "Petar Petrov", 25.3, false, true, {14, 10, 2015}},
-    {"23453446", "Londo", "Pesho Hacka", "Ivan Stanev", 42.55, true, false, {12,3,1991}},
-    {"23453447", "Tokyo", "Vasil Vasilev", "Petko Stankov", 19.34, true, false, {31, 12, 1999}}
+    {"2343", "Burgas", "Ivan Petrov", "Vasil Stanchev", 23.253, true, false, {2, 12, 2004}},
+    {"2344", "Zagora", "Ivan Ivanov", "Vasil Stanimirov", 19.34, false, true, {3, 12, 2004}},
+    {"2345", "Paris", "Ivan Cvetkov", "Petar Petrov", 25.3, false, true, {14, 10, 2015}},
+    {"2346", "Londo", "Pesho Hacka", "Ivan Stanev", 42.55, true, false, {12,3,1991}},
+    {"2347", "Tokyo", "Vasil Vasilev", "Petko Stankov", 19.34, true, false, {31, 12, 1999}}
 };
 
 void validateString(string& validated)
 {
     cin.clear();
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');
     getline(cin, validated);
 
     while (cin.fail())
     {
         cout << "Invalid entry please enter a text";
         cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');
         getline(cin, validated);
     }
 }
@@ -73,7 +73,7 @@ void enterFlight(Flight arr[], const int& n)
         while (flag != true)
         {
             cin >> answerTicketClass;
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');
 
             switch (answerTicketClass)
             {
@@ -341,7 +341,7 @@ void changePassengerClass(Flight arr[], const int& n)
             while (flag1 != true)
             {
                 cin >> choice;
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');
 
                 switch (choice)
                 {
@@ -369,7 +369,60 @@ void changePassengerClass(Flight arr[], const int& n)
         showFlights(arr, n);
 }
 
-bool menu(Flight arr[], const int& n)
+void removeFlight(Flight arr[], int& n)
+{
+    string searchedId, searchedName;
+    bool flag1 = false, flag2 = false;
+    cout << "Enter a name:" << endl;
+    validateString(searchedName);
+    cout << "Enter an Id:" << endl;
+    getline(cin, searchedId);
+    cout << "Enter a date:" << endl;
+    Date returnDate;
+    cin >> returnDate.day >> returnDate.month >> returnDate.year;
+    int returnDays = 0, flightDepartureDays = 0, difference;
+    float returnMoney = 0;
+
+    for (int i = 0; i < n; i++)
+    {
+        returnDays = returnDate.day + (returnDate.month * 30) + ((returnDate.year - 1) * 360);
+        flightDepartureDays = arr[i].date.day + (arr[i].date.month * 30) + ((arr[i].date.year - 1) * 360);
+        difference = flightDepartureDays - returnDays;
+        if (searchedId == arr[i].id && searchedName == arr[i].nameOfPassenger)
+        {
+            if (difference > 20)
+            {
+                returnMoney = arr[i].basePrice;
+                flag2 = true;
+            }
+            else if (difference <= 20 && difference > 5)
+            {
+                returnMoney = 0.75 * arr[i].basePrice;
+                flag2 = true;
+            }
+            else if (difference < 5 && difference > 0)
+            {
+                returnMoney = 0.5 * arr[i].basePrice;
+                flag2 = true;
+            }
+            n = n - 1;
+            for (int j = i; j < n; j++)
+            {
+                arr[j] = arr[j + 1];
+            }
+            flag1 = true;
+            break;
+        }
+    }
+    if (flag1 == false)
+        cout << "This passenger doesn't exist" << endl;
+    else if (flag1 == true && flag2 == false)
+        cout << "The flight is missed" << endl;
+    else
+        cout << "Returned money: " << returnMoney << endl;
+}
+
+bool menu(Flight arr[], int& n)
 {
     int choice1 = 0, choice2 = 0;
     while (choice1 != 9)
@@ -389,7 +442,7 @@ bool menu(Flight arr[], const int& n)
         if (cin.fail())
         {
             cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');
             cin >> choice1;
         }
         cin.clear();
@@ -438,7 +491,7 @@ bool menu(Flight arr[], const int& n)
             changePassengerClass(arr, n);
             break;
         case 8:
-            
+            removeFlight(arr, n);
             break;
         case 9:
             cout << "Goodbye!" << endl;
@@ -454,8 +507,8 @@ bool menu(Flight arr[], const int& n)
 
 int main()
 {
-    //SetConsoleOutputCP(CP_UTF8);
-    //SetConsoleCP(CP_UTF8);
+    SetConsoleOutputCP(CP_UTF8);
+    SetConsoleCP(CP_UTF8);
     
     Flight arr[ARRSIZE_MAX];
     int n;
