@@ -19,7 +19,7 @@ struct Flight {
     string destination;
     string nameOfPilot;
     string nameOfPassenger;
-    double basePrice;
+    float basePrice;
     bool firstClass = false;
     bool secondClass = false;
     Date date;
@@ -28,7 +28,7 @@ Flight exampleArr[] = {
     {"2343", "Burgas", "Ivan Petrov", "Vasil Stanchev", 23.253, true, false, {2, 12, 2004}},
     {"2344", "Zagora", "Ivan Ivanov", "Vasil Stanimirov", 19.34, false, true, {3, 12, 2004}},
     {"2345", "Paris", "Ivan Cvetkov", "Petar Petrov", 25.3, false, true, {14, 10, 2015}},
-    {"2346", "Londo", "Pesho Hacka", "Ivan Stanev", 42.55, true, false, {12,3,1991}},
+    {"2346", "London", "Pesho Hacka", "Ivan Stanev", 42.55, true, false, {12,3,1991}},
     {"2347", "Tokyo", "Vasil Vasilev", "Petko Stankov", 19.34, true, false, {31, 12, 1999}}
 };
 
@@ -428,7 +428,7 @@ void removeFlight(Flight arr[], int& n)
 
 void writeInFile(Flight arr[], const int& n)
 {
-    ofstream outfile("myfile.bin", ios_base::binary);
+    ofstream outfile("myfile.bin", ios_base::binary|ios_base::beg);
     if (outfile.fail())
     {
         cout << "File could not be open" << endl;
@@ -449,12 +449,12 @@ void writeInFile(Flight arr[], const int& n)
             outfile.write((char*)&sizeId, sizeof(int));
             outfile.write(strId, sizeId + 1);
             outfile.write((char*)&sizeDestination, sizeof(int));
-            outfile.write(strDestination, sizeId + 1);
+            outfile.write(strDestination, sizeDestination + 1);
             outfile.write((char*)&sizePilot, sizeof(int));
-            outfile.write(strPilot, sizeId + 1);
+            outfile.write(strPilot, sizePilot + 1);
             outfile.write((char*)&sizePassenger, sizeof(int));
-            outfile.write(strPassenger, sizeId + 1);
-            outfile.write((char*)&arr[i].basePrice, sizeof(double));
+            outfile.write(strPassenger, sizePassenger + 1);
+            outfile.write((char*)&arr[i].basePrice, sizeof(float));
             outfile.write((char*)&arr[i].firstClass, sizeof(bool));
             outfile.write((char*)&arr[i].secondClass, sizeof(bool));
             outfile.write((char*)&arr[i].date.day, sizeof(int));
@@ -483,39 +483,39 @@ void openFromFile(Flight arr[], int& n)
         char* namePassenger;
         while (infile.peek() != EOF)
         {
-            sizeId = 0;
+            /*sizeId = 0;
             sizeDestination = 0;
             sizePilot = 0;
-            sizePassenger = 0;
+            sizePassenger = 0;*/
 
             infile.read((char*)&sizeId, sizeof(int));
             id = (char*)calloc(sizeId + 1, 1);
-            infile.read((char*)id, sizeId + 1);
+            infile.read(id, sizeId + 1);
             arr[n].id = id;
 
             infile.read((char*)&sizeDestination, sizeof(int));
             destination = (char*)calloc(sizeDestination + 1, 1);
-            infile.read((char*)destination, sizeDestination + 1);
+            infile.read(destination, sizeDestination + 1);
             arr[n].destination = destination;
 
             infile.read((char*)&sizePilot, sizeof(int));
             namePilot = (char*)calloc(sizePilot + 1, 1);
-            infile.read((char*)namePilot, sizePilot + 1);
+            infile.read(namePilot, sizePilot + 1);
             arr[n].nameOfPilot = namePilot;
 
             infile.read((char*)&sizePassenger, sizeof(int));
             namePassenger = (char*)calloc(sizePassenger + 1, 1);
-            infile.read((char*)namePassenger, sizePassenger + 1);
+            infile.read(namePassenger, sizePassenger + 1);
             arr[n].nameOfPassenger = namePassenger;
 
-            infile.read((char*)arr[n].basePrice, sizeof(double));
+            infile.read((char*)&arr[n].basePrice, sizeof(float));
 
-            infile.read((char*)arr[n].firstClass, sizeof(bool));
-            infile.read((char*)arr[n].secondClass, sizeof(bool));
+            infile.read((char*)&arr[n].firstClass, sizeof(bool));
+            infile.read((char*)&arr[n].secondClass, sizeof(bool));
 
-            infile.read((char*)arr[n].date.day, sizeof(int));
-            infile.read((char*)arr[n].date.month, sizeof(int));
-            infile.read((char*)arr[n].date.year, sizeof(int));
+            infile.read((char*)&arr[n].date.day, sizeof(int));
+            infile.read((char*)&arr[n].date.month, sizeof(int));
+            infile.read((char*)&arr[n].date.year, sizeof(int));
 
             n++;
         }
@@ -526,7 +526,7 @@ void openFromFile(Flight arr[], int& n)
 bool menu(Flight arr[], int& n)
 {
     int choice1 = 0, choice2 = 0;
-    while (choice1 != 9)
+    while (choice1 != 10)
     {
         cout << "\tWelcome to my menu for flights.\nPlease select from the following choices:" << endl;
         cout << "1. Add flights" << endl;
@@ -537,7 +537,8 @@ bool menu(Flight arr[], int& n)
         cout << "6. Show current prices via a departing date" << endl;
         cout << "7. Change class via flight's id and passenger name" << endl;
         cout << "8. Delete an flight and show return price" << endl;
-        cout << "9. Exit the program" << endl;
+        cout << "9. Save in file" << endl;
+        cout << "10. Exit the program" << endl;
         cout << "Enter your choice:" << endl;
         cin >> choice1;
         if (cin.fail())
@@ -595,6 +596,9 @@ bool menu(Flight arr[], int& n)
             removeFlight(arr, n);
             break;
         case 9:
+            writeInFile(arr, n);
+            break;
+        case 10:
             cout << "Goodbye!" << endl;
             return false;
             break;
@@ -612,15 +616,18 @@ int main()
     SetConsoleCP(CP_UTF8);
     
     Flight arr[ARRSIZE_MAX];
-    int n = 0;
-
-    n = 5;
+    int n = 5;
+    //writeInFile(exampleArr, n);
+    n = 0;
+    openFromFile(arr, n);
+    /*n = 5
     for (int i = 0; i < n; i++)
     {
-        arr[i] = exampleArr[i];
-    }
+        arr[i] = examplearr[i];
+    }*/
     sortArr(arr, n);
     menu(arr, n);
+    //writeinfile(arr, n);
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
