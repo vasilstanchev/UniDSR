@@ -19,7 +19,7 @@ struct Flight {
     string destination;
     string nameOfPilot;
     string nameOfPassenger;
-    float basePrice;
+    double basePrice;
     bool firstClass = false;
     bool secondClass = false;
     Date date;
@@ -454,7 +454,7 @@ void writeInFile(Flight arr[], const int& n)
             outfile.write(strPilot, sizeId + 1);
             outfile.write((char*)&sizePassenger, sizeof(int));
             outfile.write(strPassenger, sizeId + 1);
-            outfile.write((char*)&arr[i].basePrice, sizeof(float));
+            outfile.write((char*)&arr[i].basePrice, sizeof(double));
             outfile.write((char*)&arr[i].firstClass, sizeof(bool));
             outfile.write((char*)&arr[i].secondClass, sizeof(bool));
             outfile.write((char*)&arr[i].date.day, sizeof(int));
@@ -476,11 +476,51 @@ void openFromFile(Flight arr[], int& n)
     }
     else
     {
+        int sizeId, sizeDestination, sizePilot, sizePassenger;
+        char* id;
+        char* destination;
+        char* namePilot;
+        char* namePassenger;
         while (infile.peek() != EOF)
         {
+            sizeId = 0;
+            sizeDestination = 0;
+            sizePilot = 0;
+            sizePassenger = 0;
 
+            infile.read((char*)&sizeId, sizeof(int));
+            id = (char*)calloc(sizeId + 1, 1);
+            infile.read((char*)id, sizeId + 1);
+            arr[n].id = id;
+
+            infile.read((char*)&sizeDestination, sizeof(int));
+            destination = (char*)calloc(sizeDestination + 1, 1);
+            infile.read((char*)destination, sizeDestination + 1);
+            arr[n].destination = destination;
+
+            infile.read((char*)&sizePilot, sizeof(int));
+            namePilot = (char*)calloc(sizePilot + 1, 1);
+            infile.read((char*)namePilot, sizePilot + 1);
+            arr[n].nameOfPilot = namePilot;
+
+            infile.read((char*)&sizePassenger, sizeof(int));
+            namePassenger = (char*)calloc(sizePassenger + 1, 1);
+            infile.read((char*)namePassenger, sizePassenger + 1);
+            arr[n].nameOfPassenger = namePassenger;
+
+            infile.read((char*)arr[n].basePrice, sizeof(double));
+
+            infile.read((char*)arr[n].firstClass, sizeof(bool));
+            infile.read((char*)arr[n].secondClass, sizeof(bool));
+
+            infile.read((char*)arr[n].date.day, sizeof(int));
+            infile.read((char*)arr[n].date.month, sizeof(int));
+            infile.read((char*)arr[n].date.year, sizeof(int));
+
+            n++;
         }
     }
+    infile.close();
 }
 
 bool menu(Flight arr[], int& n)
@@ -572,7 +612,8 @@ int main()
     SetConsoleCP(CP_UTF8);
     
     Flight arr[ARRSIZE_MAX];
-    int n;
+    int n = 0;
+
     n = 5;
     for (int i = 0; i < n; i++)
     {
