@@ -51,17 +51,20 @@ bool compareCharacters(char a, char b) {
     return tolower(a) < tolower(b);
 }
 
-void enterFlight(Flight arr[], const int& n)
+void enterFlights(Flight arr[], int& n)
 {
     char answerTicketClass;
     bool flag = false;
+    int newElementsCount;
+    cout << "Enter the number of flights you want to register" << endl;
+    cin >> newElementsCount;
     cout << "Enter the list with the flights:" << endl;
-    for (int i = 0; i < n; i++)
+    for (int i = n; i < n + newElementsCount; i++)
     {
+        cout << "Enter a destination:" << endl;
+        validateString(arr[i].destination);
         cout << "Enter a Id:" << endl;
         getline(cin, arr[i].id);
-        cout << "Enter a destination:" << endl;
-        getline(cin, arr[i].destination);
         cout << "Enter the name of the pilot:" << endl;
         getline(cin, arr[i].nameOfPilot);
         cout << "Enter the name of the passenger:" << endl;
@@ -96,6 +99,7 @@ void enterFlight(Flight arr[], const int& n)
         cin >> arr[i].date.month;
         cin >> arr[i].date.year;
     }
+    n = n + newElementsCount;
 }
 
 void showFlights(const Flight arr[], const int& n)
@@ -449,7 +453,7 @@ bool menu(Flight arr[], int& n)
         switch (choice1)
         {
         case 1:
-            enterFlight(arr, n);
+            enterFlights(arr, n);
             break;
         case 2:
             showFlights(arr, n);
@@ -512,8 +516,6 @@ int main()
     
     Flight arr[ARRSIZE_MAX];
     int n;
-    /*cout << "Enter the number of flights you want to register. The maxium is 50." << endl;
-    cin >> n;*/
     n = 5;
     for (int i = 0; i < n; i++)
     {
