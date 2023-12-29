@@ -4,7 +4,7 @@
 #include<Windows.h>
 #include <iostream>
 #include <string>
-#include <algorithm>
+#include <fstream>
 using namespace std;
 
 const int ARRSIZE_MAX = 50;
@@ -424,6 +424,63 @@ void removeFlight(Flight arr[], int& n)
         cout << "The flight is missed" << endl;
     else
         cout << "Returned money: " << returnMoney << endl;
+}
+
+void writeInFile(Flight arr[], const int& n)
+{
+    ofstream outfile("myfile.bin", ios_base::binary);
+    if (outfile.fail())
+    {
+        cout << "File could not be open" << endl;
+    }
+    else
+    {
+        for (int i = 0; i < n; i++)
+        {
+            int sizeId = arr[i].id.size();
+            const char* strId = arr[i].id.c_str();
+            int sizeDestination = arr[i].destination.size();
+            const char* strDestination = arr[i].destination.c_str();
+            int sizePilot = arr[i].nameOfPilot.size();
+            const char* strPilot = arr[i].nameOfPilot.c_str();
+            int sizePassenger = arr[i].nameOfPassenger.size();
+            const char* strPassenger = arr[i].nameOfPassenger.c_str();
+
+            outfile.write((char*)&sizeId, sizeof(int));
+            outfile.write(strId, sizeId + 1);
+            outfile.write((char*)&sizeDestination, sizeof(int));
+            outfile.write(strDestination, sizeId + 1);
+            outfile.write((char*)&sizePilot, sizeof(int));
+            outfile.write(strPilot, sizeId + 1);
+            outfile.write((char*)&sizePassenger, sizeof(int));
+            outfile.write(strPassenger, sizeId + 1);
+            outfile.write((char*)&arr[i].basePrice, sizeof(float));
+            outfile.write((char*)&arr[i].firstClass, sizeof(bool));
+            outfile.write((char*)&arr[i].secondClass, sizeof(bool));
+            outfile.write((char*)&arr[i].date.day, sizeof(int));
+            outfile.write((char*)&arr[i].date.month, sizeof(int));
+            outfile.write((char*)&arr[i].date.year, sizeof(int));
+
+            outfile.flush();
+        }
+    }
+    outfile.close();
+}
+
+void openFromFile(Flight arr[], int& n)
+{
+    ifstream infile("myfile.bin", ios_base::binary | ios_base::beg);
+    if (infile.fail())
+    {
+        cout << "File could not be open" << endl;
+    }
+    else
+    {
+        while (infile.peek() != EOF)
+        {
+
+        }
+    }
 }
 
 bool menu(Flight arr[], int& n)
