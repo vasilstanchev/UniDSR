@@ -40,7 +40,7 @@ void validateString(string& validated)
 
     while (cin.fail())
     {
-        cout << "Invalid entry please enter a text";
+        cout << "Невалиден вход, вкарайте текст";
         cin.clear();
         cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');
         getline(cin, validated);
@@ -56,22 +56,22 @@ void enterFlights(Flight arr[], int& n)
     char answerTicketClass;
     bool flag = false;
     int newElementsCount;
-    cout << "Enter the number of flights you want to register" << endl;
+    cout << "Вкарайте броя полети, които искате да вкарате:" << endl;
     cin >> newElementsCount;
-    cout << "Enter the list with the flights:" << endl;
+    cout << "Вкарайте полетата във полетите:" << endl;
     for (int i = n; i < n + newElementsCount; i++)
     {
-        cout << "Enter a destination:" << endl;
+        cout << "Вкарайте дестинация:" << endl;
         validateString(arr[i].destination);
-        cout << "Enter a Id:" << endl;
+        cout << "Вкарайте номер на полета:" << endl;
         getline(cin, arr[i].id);
-        cout << "Enter the name of the pilot:" << endl;
+        cout << "Вкарайте име на пилот:" << endl;
         getline(cin, arr[i].nameOfPilot);
-        cout << "Enter the name of the passenger:" << endl;
+        cout << "Вкарайте име на пътник:" << endl;
         getline(cin, arr[i].nameOfPassenger);
-        cout << "Enter the base price of the flight" << endl;
+        cout << "Вкарайте основна цена на полета" << endl;
         cin >> arr[i].basePrice;
-        cout << "Is your ticket first class? Y(y) or N(n)" << endl;
+        cout << "Вашия билет първа класа ли е? Да или не / Y(y) или N(n)" << endl;
         flag = false;
         while (flag != true)
         {
@@ -90,11 +90,11 @@ void enterFlights(Flight arr[], int& n)
                 arr[i].secondClass = true;
                 flag = true;
                 break;
-            default:cout << "Enter a valid answer!" << endl;
+            default:cout << "Вкарайте валиден вход" << endl;
                 break;
             }
         }
-        cout << "Enter a date of the flight: day, month and year" << endl;
+        cout << "Вкарайте дата на полета: ден, месец и година:" << endl;
         cin >> arr[i].date.day;
         cin >> arr[i].date.month;
         cin >> arr[i].date.year;
@@ -105,13 +105,13 @@ void enterFlights(Flight arr[], int& n)
 void showFlights(const Flight arr[], const int& n)
 {
     string classType;
-    cout << "Here is the list with the flights: " << endl;
-    cout << "ID | DESTINATION | PILOT'S NAME | PASSENGER'S NAME | BASE PRICE | CLASS | DATE" << endl;
+    cout << "Лист с полети: " << endl;
+    cout << "НОМЕР НА ПОЛЕТА | ДЕСТИНАЦИЯ | ПИЛОТ | ПЪТНИК | ОСНОВНА ЦЕНА | КЛАСА | ДАТА" << endl;
     for (int i = 0; i < n; i++)
     {
-        classType = (arr[i].firstClass == true) ? "First class" : "Second class";
-        cout << arr[i].id << " " << arr[i].destination << " " << arr[i].nameOfPilot << " " << arr[i].nameOfPassenger
-            << " " << arr[i].basePrice << " " << classType << " " << arr[i].date.day << "."
+        classType = (arr[i].firstClass == true) ? "Първа класа" : "Втора класа";
+        cout << arr[i].id << " | " << arr[i].destination << " | " << arr[i].nameOfPilot << " | " << arr[i].nameOfPassenger
+            << " | " << arr[i].basePrice << " | " << classType << " | " << arr[i].date.day << "."
             << arr[i].date.month << "." << arr[i].date.year << endl;
     }
 }
@@ -135,11 +135,11 @@ void showMinPricedFlights(const Flight arr[], const int& n)
         }
     }
 
-    cout << "Here is the list with the lowest priced flights: " << endl;
-    cout << "ID | DESTINATION | PILOT'S NAME | PASSENGER'S NAME | BASE PRICE | CLASS | DATE" << endl;
+    cout << "Лист с полети: " << endl;
+    cout << "НОМЕР НА ПОЛЕТА | ДЕСТИНАЦИЯ | ПИЛОТ | ПЪТНИК | ОСНОВНА ЦЕНА | КЛАСА | ДАТА" << endl;
     for (int i = 0; i < count; i++)
     {
-        classType = (arr[indexes[i]].firstClass == true) ? "First class" : "Second class";
+        classType = (arr[indexes[i]].firstClass == true) ? "Първа класа" : "Втора класа";
         cout << arr[indexes[i]].id << " " << arr[indexes[i]].destination << " " << arr[indexes[i]].nameOfPilot << " " << arr[indexes[i]].nameOfPassenger
             << " " << arr[indexes[i]].basePrice << " " << classType << " " << arr[indexes[i]].date.day << "."
             << arr[indexes[i]].date.month << "." << arr[indexes[i]].date.year << endl;
@@ -151,14 +151,14 @@ void showPilotFlights(const Flight arr[], const int& n)
     string name;
     string classType;
     bool flag = false;
-    cout << "Enter a pilot's name:" << endl;
+    cout << "Вкарайте име на пилот:" << endl;
     validateString(name);
     
-    cout << "Here is the list with the given pilot's name flights:" << endl;
-    cout << "ID | DESTINATION | PILOT'S NAME | PASSENGER'S NAME | BASE PRICE | CLASS | DATE" << endl;
+    cout << "Лист с полети свързан с даденото име на пилота: " << endl;
+    cout << "НОМЕР НА ПОЛЕТА | ДЕСТИНАЦИЯ | ПИЛОТ | ПЪТНИК | ОСНОВНА ЦЕНА | КЛАСА | ДАТА" << endl;
     for (int i = 0; i < n; i++)
     {
-        classType = (arr[i].firstClass == true) ? "First class" : "Second class";
+        classType = (arr[i].firstClass == true) ? "Първа класа" : "Втора класа";
         if (arr[i].nameOfPilot == name)
         {
             cout << arr[i].id << " " << arr[i].destination << " " << arr[i].nameOfPilot << " " << arr[i].nameOfPassenger
@@ -170,7 +170,7 @@ void showPilotFlights(const Flight arr[], const int& n)
 
     if (flag == false)
     {
-        cout << "There are no connected flights to this pilot." << endl;
+        cout << "Няма свързани полети с дадения пилот" << endl;
     }
 }
 
@@ -251,15 +251,15 @@ void showDateAndPilotFlights(Flight arr[], const int& n)
     string searchedDestination;
     bool flag = false;
     string classType;
-    cout << "Enter a date:" << endl;
+    cout << "Вкарайте дата:" << endl;
     cin >> searchedDate.day >> searchedDate.month >> searchedDate.year;
-    cout << "Enter a destination" << endl;
+    cout << "Вкарайте дестинация" << endl;
     validateString(searchedDestination);
 
-    cout << "Here's the list with the flights:" << endl;
+    cout << "Лист с полетите на съответната дата и дестинация:" << endl;
     for (int i = 0; i < n; i++)
     {
-        classType = (arr[i].firstClass == true) ? "First class" : "Second class";
+        classType = (arr[i].firstClass == true) ? "Първа класа" : "Втора класа";
         if ((searchedDate.day == arr[i].date.day) && (searchedDate.month == arr[i].date.month) && (searchedDate.year == arr[i].date.year))
         {
             if (searchedDestination == arr[i].destination)
@@ -274,7 +274,7 @@ void showDateAndPilotFlights(Flight arr[], const int& n)
 
     if (flag == false)
     {
-        cout << "There are no connected flights to this date and destination" << endl;
+        cout << "Няма свързани полети на съответната дата и дестинация" << endl;
     }
 }
 
@@ -284,14 +284,14 @@ void calculateCurrentFlightPrice(Flight arr[], const int& n)
     string classType;
     int departureDays = 0, flightDepartureDays = 0,difference;
     float currentPrice = 0;
-    cout << "Enter a date:" << endl;
+    cout << "Вкарайте дата:" << endl;
     cin >> departure.day >> departure.month >> departure.year;
 
-    cout << "Here is the list with the base prices and the new ones:" << endl;
-    cout << "ID | DESTINATION | PILOT'S NAME | PASSENGER'S NAME | BASE PRICE | NEW PRICE | CLASS | FLIGHT DATE | PASSENGER DEPARTURE DATE" << endl;
+    cout << "Лист с полети с основната цена и новата спрямо посочената дата:" << endl;
+    cout << "НОМЕР НА ПОЛЕТА | ДЕСТИНАЦИЯ | ПИЛОТ | ПЪТНИК | ОСНОВНА ЦЕНА | НОВА ЦЕНА | КЛАСА | ДАТА НА ПОЛЕТА | ДАТА НА ПЪТНИКА" << endl;
     for (int i = 0; i < n; i++)
     {
-        classType = (arr[i].firstClass == true) ? "First class" : "Second class";
+        classType = (arr[i].firstClass == true) ? "Първа класа" : "Втора класа";
         departureDays = departure.day + (departure.month * 30) + ((departure.year - 1) * 360);
         flightDepartureDays = arr[i].date.day + (arr[i].date.month * 30) + ((arr[i].date.year - 1) * 360);
         difference = flightDepartureDays - departureDays;
@@ -314,7 +314,7 @@ void calculateCurrentFlightPrice(Flight arr[], const int& n)
         }
         else 
         {
-            cout << "The flight is missed" << endl;
+            cout << "Полета е пропуснат" << endl;
             continue;
         }
 
@@ -331,17 +331,17 @@ void changePassengerClass(Flight arr[], const int& n)
     char choice;
     bool flag1 = false, flag2 = false;
     string searchedId, searchedName;
-    cout << "Enter a name:" << endl;
+    cout << "Вкарайте име на пътника:" << endl;
     validateString(searchedName);
-    cout << "Enter an Id:" << endl;
+    cout << "Вкарайте номер на полета:" << endl;
     getline(cin, searchedId);
 
     for (int i = 0; i < n; i++)
     {
         if (searchedId == arr[i].id && searchedName == arr[i].nameOfPassenger)
         {
-            cout << "Do you want to change you ticket to a first class?" << endl;
-            cout << "Answer Y(y)/N(n):" << endl;
+            cout << "Искате ли да промените билета си на първа класа?" << endl;
+            cout << "Отговор Да/Не / Y(y)/N(n):" << endl;
             while (flag1 != true)
             {
                 cin >> choice;
@@ -359,7 +359,7 @@ void changePassengerClass(Flight arr[], const int& n)
                     arr[i].secondClass = true;
                     flag1 = true;
                     break;
-                default:cout << "Enter a valid answer!" << endl;
+                default:cout << "Въведете валиден вход" << endl;
                     break;
                 }
             }
@@ -368,7 +368,7 @@ void changePassengerClass(Flight arr[], const int& n)
     }
 
     if (flag2 == false)
-        cout << "This passenger doesn't exist" << endl;
+        cout << "Данните не съответстват" << endl;
     else
         showFlights(arr, n);
 }
@@ -377,11 +377,11 @@ void removeFlight(Flight arr[], int& n)
 {
     string searchedId, searchedName;
     bool flag1 = false, flag2 = false;
-    cout << "Enter a name:" << endl;
+    cout << "Вкарайте име на пътника:" << endl;
     validateString(searchedName);
-    cout << "Enter an Id:" << endl;
+    cout << "Вкарайте номер на полета:" << endl;
     getline(cin, searchedId);
-    cout << "Enter a date:" << endl;
+    cout << "Вкарайте дата:" << endl;
     Date returnDate;
     cin >> returnDate.day >> returnDate.month >> returnDate.year;
     int returnDays = 0, flightDepartureDays = 0, difference;
@@ -419,11 +419,11 @@ void removeFlight(Flight arr[], int& n)
         }
     }
     if (flag1 == false)
-        cout << "This passenger doesn't exist" << endl;
+        cout << "Данните не съответстват" << endl;
     else if (flag1 == true && flag2 == false)
-        cout << "The flight is missed" << endl;
+        cout << "Полетът е пропуснат" << endl;
     else
-        cout << "Returned money: " << returnMoney << endl;
+        cout << "Сума за връщане: " << returnMoney << endl;
 }
 
 void writeInFile(Flight arr[], const int& n)
@@ -431,7 +431,7 @@ void writeInFile(Flight arr[], const int& n)
     ofstream outfile("myfile.bin", ios_base::binary|ios_base::beg);
     if (outfile.fail())
     {
-        cout << "File could not be open" << endl;
+        cout << "Файлът не може да бъде отворен" << endl;
     }
     else
     {
@@ -472,7 +472,7 @@ void openFromFile(Flight arr[], int& n)
     ifstream infile("myfile.bin", ios_base::binary | ios_base::beg);
     if (infile.fail())
     {
-        cout << "File could not be open" << endl;
+        cout << "Файлът не може да бъде отворен" << endl;
     }
     else
     {
@@ -528,18 +528,18 @@ bool menu(Flight arr[], int& n)
     int choice1 = 0, choice2 = 0;
     while (choice1 != 10)
     {
-        cout << "\tWelcome to my menu for flights.\nPlease select from the following choices:" << endl;
-        cout << "1. Add flights" << endl;
-        cout << "2. Show flights" << endl;
-        cout << "3. Show the lowest priced flights" << endl;
-        cout << "4. Search for a flight via a pilot's name" << endl;
-        cout << "5. Show additional choices" << endl;
-        cout << "6. Show current prices via a departing date" << endl;
-        cout << "7. Change class via flight's id and passenger name" << endl;
-        cout << "8. Delete an flight and show return price" << endl;
-        cout << "9. Save in file" << endl;
-        cout << "10. Exit the program" << endl;
-        cout << "Enter your choice:" << endl;
+        cout << "\tТова е система за полети.\nИзберете от следните възможности:" << endl;
+        cout << "1. Добавяне на полети" << endl;
+        cout << "2. Показване на полети" << endl;
+        cout << "3. Показване на полетите със най-ниска основна цена" << endl;
+        cout << "4. Търсене на определен полет спрямо име на пилот" << endl;
+        cout << "5. Показване на допълнителни възможности" << endl;
+        cout << "6. Показване на текуща цена спрямо дата на заминаване" << endl;
+        cout << "7. Промяна на класа на полета спрямо номер на полета и име на пътника" << endl;
+        cout << "8. Изтриване на полет и показване на сума за връщане" << endl;
+        cout << "9. Запис във файл" << endl;
+        cout << "10. Изход от програма" << endl;
+        cout << "Вкарване на избор:" << endl;
         cin >> choice1;
         if (cin.fail())
         {
@@ -552,6 +552,7 @@ bool menu(Flight arr[], int& n)
         {
         case 1:
             enterFlights(arr, n);
+            sortArr(arr, n);
             break;
         case 2:
             showFlights(arr, n);
@@ -565,10 +566,10 @@ bool menu(Flight arr[], int& n)
         case 5:
             while (choice2 != 3)
             {
-                cout << "1. Show ascending sorted data thought price and class of the flights" << endl;
-                cout << "2. Search for a flight via a date and deastination" << endl;
-                cout << "3. Exit to the main menu" << endl;
-                cout << "Enter your choice:" << endl;
+                cout << "1. Показване на сортираните полети спрямо цена и клас" << endl;
+                cout << "2. Търсене на полет спрямо дата и дестинация" << endl;
+                cout << "3. Връщане обратно във главното меню" << endl;
+                cout << "Вкарване на избор:" << endl;
                 cin >> choice2;
                 switch (choice2)
                 {
@@ -581,7 +582,7 @@ bool menu(Flight arr[], int& n)
                 case 3:
                     break;
                 default:
-                    cout << "Enter a correct choice" << endl;
+                    cout << "Въведете правилен избор" << endl;
                     break;
                 }
             }
@@ -597,13 +598,14 @@ bool menu(Flight arr[], int& n)
             break;
         case 9:
             writeInFile(arr, n);
+            cout << "Записано във файл!"<<endl;
             break;
         case 10:
-            cout << "Goodbye!" << endl;
+            cout << "Довиждане!" << endl;
             return false;
             break;
         default:
-            cout << "Enter a correct choice" << endl;
+            cout << "Въведете правилен избор" << endl;
             break;
         }
     }
@@ -616,18 +618,12 @@ int main()
     SetConsoleCP(CP_UTF8);
     
     Flight arr[ARRSIZE_MAX];
-    int n = 5;
-    //writeInFile(exampleArr, n);
+    int n;
     n = 0;
     openFromFile(arr, n);
-    /*n = 5
-    for (int i = 0; i < n; i++)
-    {
-        arr[i] = examplearr[i];
-    }*/
     sortArr(arr, n);
     menu(arr, n);
-    //writeinfile(arr, n);
+    writeInFile(arr, n);
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
