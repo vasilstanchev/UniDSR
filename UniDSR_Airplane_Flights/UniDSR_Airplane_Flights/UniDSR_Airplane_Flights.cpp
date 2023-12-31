@@ -28,7 +28,7 @@ Flight exampleArr[] = {
     {"2343", "Burgas", "Ivan Petrov", "Vasil Stanchev", 23.253, true, false, {2, 12, 2004}},
     {"2344", "Zagora", "Ivan Ivanov", "Vasil Stanimirov", 19.34, false, true, {3, 12, 2004}},
     {"2345", "Paris", "Ivan Cvetkov", "Petar Petrov", 25.3, false, true, {14, 10, 2015}},
-    {"2346", "London", "Pesho Hacka", "Ivan Stanev", 42.55, true, false, {12,3,1991}},
+    {"2346", "London", "Petar Georgiev", "Ivan Stanev", 42.55, true, false, {12,3,1991}},
     {"2347", "Tokyo", "Vasil Vasilev", "Petko Stankov", 19.34, true, false, {31, 12, 1999}}
 };
 
@@ -44,6 +44,21 @@ void validateString(string& validated)
         cin.clear();
         cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');
         getline(cin, validated);
+    }
+}
+
+void validateDate(Date& date)
+{
+    bool flag = false;
+    while (flag != true)
+    {
+        cin >> date.day >> date.month >> date.year;
+        if ((date.day > 0 && date.day < 31) && (date.month > 0 && date.month < 13) && date.year > 1900)
+        {
+            flag = true;
+        }
+        else
+            cout << "Въведете правилна дата" << endl;
     }
 }
 
@@ -95,9 +110,7 @@ void enterFlights(Flight arr[], int& n)
             }
         }
         cout << "Вкарайте дата на полета: ден, месец и година:" << endl;
-        cin >> arr[i].date.day;
-        cin >> arr[i].date.month;
-        cin >> arr[i].date.year;
+        validateDate(arr[i].date);
     }
     n = n + newElementsCount;
 }
@@ -140,8 +153,8 @@ void showMinPricedFlights(const Flight arr[], const int& n)
     for (int i = 0; i < count; i++)
     {
         classType = (arr[indexes[i]].firstClass == true) ? "Първа класа" : "Втора класа";
-        cout << arr[indexes[i]].id << " " << arr[indexes[i]].destination << " " << arr[indexes[i]].nameOfPilot << " " << arr[indexes[i]].nameOfPassenger
-            << " " << arr[indexes[i]].basePrice << " " << classType << " " << arr[indexes[i]].date.day << "."
+        cout << arr[indexes[i]].id << " | " << arr[indexes[i]].destination << " | " << arr[indexes[i]].nameOfPilot << " | " << arr[indexes[i]].nameOfPassenger
+            << " | " << arr[indexes[i]].basePrice << " | " << classType << " | " << arr[indexes[i]].date.day << "."
             << arr[indexes[i]].date.month << "." << arr[indexes[i]].date.year << endl;
     }
 }
@@ -161,8 +174,8 @@ void showPilotFlights(const Flight arr[], const int& n)
         classType = (arr[i].firstClass == true) ? "Първа класа" : "Втора класа";
         if (arr[i].nameOfPilot == name)
         {
-            cout << arr[i].id << " " << arr[i].destination << " " << arr[i].nameOfPilot << " " << arr[i].nameOfPassenger
-                << " " << arr[i].basePrice << " " << classType << " " << arr[i].date.day << "."
+            cout << arr[i].id << " | " << arr[i].destination << " | " << arr[i].nameOfPilot << " | " << arr[i].nameOfPassenger
+                << " | " << arr[i].basePrice << " | " << classType << " | " << arr[i].date.day << "."
                 << arr[i].date.month << "." << arr[i].date.year << endl;
             flag = true;
         }
@@ -251,8 +264,8 @@ void showDateAndPilotFlights(Flight arr[], const int& n)
     string searchedDestination;
     bool flag = false;
     string classType;
-    cout << "Вкарайте дата:" << endl;
-    cin >> searchedDate.day >> searchedDate.month >> searchedDate.year;
+    cout << "Вкарайте дата: ден, месец и дата" << endl;
+    validateDate(searchedDate);
     cout << "Вкарайте дестинация" << endl;
     validateString(searchedDestination);
 
@@ -264,8 +277,8 @@ void showDateAndPilotFlights(Flight arr[], const int& n)
         {
             if (searchedDestination == arr[i].destination)
             {
-                cout << arr[i].id << " " << arr[i].destination << " " << arr[i].nameOfPilot << " " << arr[i].nameOfPassenger
-                     << " " << arr[i].basePrice << " " << classType << " " << arr[i].date.day << "."
+                cout << arr[i].id << " | " << arr[i].destination << " | " << arr[i].nameOfPilot << " | " << arr[i].nameOfPassenger
+                     << " | " << arr[i].basePrice << " | " << classType << " | " << arr[i].date.day << "."
                      << arr[i].date.month << "." << arr[i].date.year << endl;
                 flag = true;
             }
@@ -284,8 +297,8 @@ void calculateCurrentFlightPrice(Flight arr[], const int& n)
     string classType;
     int departureDays = 0, flightDepartureDays = 0,difference;
     float currentPrice = 0;
-    cout << "Вкарайте дата:" << endl;
-    cin >> departure.day >> departure.month >> departure.year;
+    cout << "Вкарайте дата: ден, месец и година" << endl;
+    validateDate(departure);
 
     cout << "Лист с полети с основната цена и новата спрямо посочената дата:" << endl;
     cout << "НОМЕР НА ПОЛЕТА | ДЕСТИНАЦИЯ | ПИЛОТ | ПЪТНИК | ОСНОВНА ЦЕНА | НОВА ЦЕНА | КЛАСА | ДАТА НА ПОЛЕТА | ДАТА НА ПЪТНИКА" << endl;
@@ -318,9 +331,9 @@ void calculateCurrentFlightPrice(Flight arr[], const int& n)
             continue;
         }
 
-        cout << arr[i].id << " " << arr[i].destination << " " << arr[i].nameOfPilot << " " << arr[i].nameOfPassenger
-            << " " << arr[i].basePrice << " " << currentPrice << " " << classType << " " << arr[i].date.day << "."
-            << arr[i].date.month << "." << arr[i].date.year << " " << departure.day << "." << departure.month << "." 
+        cout << arr[i].id << " | " << arr[i].destination << " | " << arr[i].nameOfPilot << " | " << arr[i].nameOfPassenger
+            << " | " << arr[i].basePrice << " | " << currentPrice << " | " << classType << " | " << arr[i].date.day << "."
+            << arr[i].date.month << "." << arr[i].date.year << " | " << departure.day << "." << departure.month << "." 
             << departure.year << endl;
 
     }
@@ -381,9 +394,9 @@ void removeFlight(Flight arr[], int& n)
     validateString(searchedName);
     cout << "Вкарайте номер на полета:" << endl;
     getline(cin, searchedId);
-    cout << "Вкарайте дата:" << endl;
+    cout << "Вкарайте дата: ден, месец и година" << endl;
     Date returnDate;
-    cin >> returnDate.day >> returnDate.month >> returnDate.year;
+    validateDate(returnDate);
     int returnDays = 0, flightDepartureDays = 0, difference;
     float returnMoney = 0;
 
