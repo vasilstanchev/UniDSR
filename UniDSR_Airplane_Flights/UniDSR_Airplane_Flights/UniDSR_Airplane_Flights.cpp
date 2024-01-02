@@ -24,13 +24,6 @@ struct Flight {
     bool secondClass = false;
     Date date;
 };
-Flight exampleArr[] = {
-    {"2343", "Burgas", "Ivan Petrov", "Vasil Stanchev", 23.253, true, false, {2, 12, 2004}},
-    {"2344", "Zagora", "Ivan Ivanov", "Vasil Stanimirov", 19.34, false, true, {3, 12, 2004}},
-    {"2345", "Paris", "Ivan Cvetkov", "Petar Petrov", 25.3, false, true, {14, 10, 2015}},
-    {"2346", "London", "Petar Georgiev", "Ivan Stanev", 42.55, true, false, {12,3,1991}},
-    {"2347", "Tokyo", "Vasil Vasilev", "Petko Stankov", 19.34, true, false, {31, 12, 1999}}
-};
 
 void validateString(string& validated)
 {
@@ -81,9 +74,9 @@ void enterFlights(Flight arr[], int& n)
         cout << "Вкарайте номер на полета:" << endl;
         getline(cin, arr[i].id);
         cout << "Вкарайте име на пилот:" << endl;
-        getline(cin, arr[i].nameOfPilot);
+        validateString(arr[i].nameOfPilot);
         cout << "Вкарайте име на пътник:" << endl;
-        getline(cin, arr[i].nameOfPassenger);
+        validateString(arr[i].nameOfPassenger);
         cout << "Вкарайте основна цена на полета" << endl;
         cin >> arr[i].basePrice;
         cout << "Вашия билет първа класа ли е? Да или не / Y(y) или N(n)" << endl;
@@ -115,7 +108,7 @@ void enterFlights(Flight arr[], int& n)
     n = n + newElementsCount;
 }
 
-void showFlights(const Flight arr[], const int& n)
+void showFlights(Flight arr[], int& n)
 {
     string classType;
     cout << "Лист с полети: " << endl;
@@ -129,7 +122,7 @@ void showFlights(const Flight arr[], const int& n)
     }
 }
 
-void showMinPricedFlights(const Flight arr[], const int& n) 
+void showMinPricedFlights(Flight arr[], int& n) 
 {
     Flight min = arr[0];
     string classType;
@@ -159,7 +152,7 @@ void showMinPricedFlights(const Flight arr[], const int& n)
     }
 }
 
-void showPilotFlights(const Flight arr[], const int& n)
+void showPilotFlights(Flight arr[], int& n)
 {
     string name;
     string classType;
@@ -187,7 +180,7 @@ void showPilotFlights(const Flight arr[], const int& n)
     }
 }
 
-void sortArr(Flight arr[], const int& n)
+void sortArr(Flight arr[], int& n)
 {
     bool swap;
     char first, second;
@@ -212,7 +205,7 @@ void sortArr(Flight arr[], const int& n)
     }
 }
 
-void showSortedAscendingPriceAndClass(Flight arr[], const int& n)
+void showSortedAscendingPriceAndClass(Flight arr[], int& n)
 {
     Flight newArr[ARRSIZE_MAX];
     bool swap;
@@ -258,7 +251,7 @@ void showSortedAscendingPriceAndClass(Flight arr[], const int& n)
     showFlights(newArr, n);
 }
 
-void showDateAndPilotFlights(Flight arr[], const int& n)
+void showDateAndPilotFlights(Flight arr[], int& n)
 {
     Date searchedDate;
     string searchedDestination;
@@ -291,7 +284,7 @@ void showDateAndPilotFlights(Flight arr[], const int& n)
     }
 }
 
-void calculateCurrentFlightPrice(Flight arr[], const int& n)
+void calculateCurrentFlightPrice(Flight arr[], int& n)
 {
     Date departure;
     string classType;
@@ -339,7 +332,7 @@ void calculateCurrentFlightPrice(Flight arr[], const int& n)
     }
 }
 
-void changePassengerClass(Flight arr[], const int& n)
+void changePassengerClass(Flight arr[], int& n)
 {
     char choice;
     bool flag1 = false, flag2 = false;
@@ -407,12 +400,12 @@ void removeFlight(Flight arr[], int& n)
         difference = flightDepartureDays - returnDays;
         if (searchedId == arr[i].id && searchedName == arr[i].nameOfPassenger)
         {
-            if (difference > 20)
+            if (difference >= 20)
             {
                 returnMoney = arr[i].basePrice;
                 flag2 = true;
             }
-            else if (difference <= 20 && difference > 5)
+            else if (difference < 20 && difference > 5)
             {
                 returnMoney = 0.75 * arr[i].basePrice;
                 flag2 = true;
@@ -439,7 +432,7 @@ void removeFlight(Flight arr[], int& n)
         cout << "Сума за връщане: " << returnMoney << endl;
 }
 
-void writeInFile(Flight arr[], const int& n)
+void writeInFile(Flight arr[], int& n)
 {
     ofstream outfile("myfile.bin", ios_base::binary|ios_base::beg);
     if (outfile.fail())
@@ -496,10 +489,6 @@ void openFromFile(Flight arr[], int& n)
         char* namePassenger;
         while (infile.peek() != EOF)
         {
-            /*sizeId = 0;
-            sizeDestination = 0;
-            sizePilot = 0;
-            sizePassenger = 0;*/
 
             infile.read((char*)&sizeId, sizeof(int));
             id = (char*)calloc(sizeId + 1, 1);
@@ -584,6 +573,12 @@ bool menu(Flight arr[], int& n)
                 cout << "3. Връщане обратно във главното меню" << endl;
                 cout << "Вкарване на избор:" << endl;
                 cin >> choice2;
+                if (cin.fail())
+                {
+                    cin.clear();
+                    cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');
+                    cin >> choice1;
+                }
                 switch (choice2)
                 {
                 case 1:
